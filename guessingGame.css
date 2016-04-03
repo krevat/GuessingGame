@@ -19,7 +19,7 @@ main {
 	height: 100%;
 	margin: 0 auto;
 	background-color: #fff;
-	padding: 40px 0;
+	padding: 40px 10px;
 }
 
 h1 {
@@ -78,4 +78,18 @@ button:focus {
 
 #extra .btn{
 	background: #cc7a00;
+}
+
+.wrong {
+	color: red;
+}
+
+.right {
+	color: green;
+}
+
+#youLost, #youWon {
+	width: 300px;
+	border: none;
+	display: none;
 }

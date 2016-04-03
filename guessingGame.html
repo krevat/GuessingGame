@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
     <title>Number Guessing Game</title>
     <link rel="stylesheet" href="guessingGame.css">
+    <script src="jquery-2.2.2.min.js"></script>
+    <script src="guessingGame.js"></script>
 </head>
 
 <body>
@@ -13,11 +15,14 @@
 
 	<!-- ask user for number -->
 	<section id="guess">
-		<form action="">
+		<form action="" onsubmit="return false">
 			<input id="userInput" type="text" placeholder="Input Number 1-100" /><br />
-			<input type="submit" value="Submit" class="btn btn-1"/>
+			<input id ="submit" type="submit" value="Submit" class="btn btn-1"/>
 			<!-- <button class="btn btn-1">Submit</button> -->
 		</form>
+		<p>Guess a number to start playing!</p>
+		<img id="youLost" src="http://i.giphy.com/2XNr3nI7Kmu76.gif" />
+		<img id="youWon" src="http://i.giphy.com/QMkPpxPDYY0fu.gif" />
 	</section>
 	<section id="extra">
 		<button class="btn btn-1">New Game</button>

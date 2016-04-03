@@ -1,33 +1,32 @@
-/* **** Global Variables **** */
-// try to elminate these global variables in your project, these are here just to start.
-
-var playersGuess;
-var winningNumber = generateWinningNumber();
-var playersGuesses = [];
-var hint = true;
-var won = false;
+function GGame() {
+		this.playersGuess = undefined;
+		this.winningNumber = generatewinningNumber();
+		this.playersGuesses = [];
+		this.hint = true;
+		this.won = false;
+	}
 
 /* **** Guessing Game Functions **** */
 
 // Generate the Winning Number
 
-function generateWinningNumber(){
+function generatewinningNumber(){
 	return Math.floor(Math.random() * 100) + 1;
 }
 
 // Fetch the Players Guess
 
-function playersGuessSubmission(){
+function playersGuessSubmission(g){
 	// add code here
-	playersGuess = $('#userInput').val();
-	if (!$.isNumeric(playersGuess)){
+	g.playersGuess = $('#userInput').val();
+	if (!$.isNumeric(g.playersGuess)){
 		$('p').text("Please input a valid number");
 	}
 	else {
-		playersGuess = +$('#userInput').val();
-		//console.log("PlayersGuess is "+ playersGuess);
-		if (playersGuess > 0 && playersGuess <= 100){
-			checkGuess();
+		g.playersGuess = +$('#userInput').val();
+		//console.log("g.playersGuess is "+ g.playersGuess);
+		if (g.playersGuess > 0 && g.playersGuess <= 100){
+			checkGuess(g);
 		}
 		else {
 			$('p').text("Please input a valid number");
@@ -59,42 +58,42 @@ function lowerOrHigher(g, w){
 
 // Check if the Player's Guess is the winning number 
 
-function checkGuess(){
+function checkGuess(g){
 	// add code here
-	if (playersGuess === winningNumber){
+	if (g.playersGuess === g.winningNumber){
 		if ($('p').hasClass("wrong")) {
 			$('p').removeClass(("wrong"));
 		}
 		$('p').addClass("right");
 		$('p').text("You won!");
 		$('#youWon').show();
-		hint = false;
-		won = true;
+		g.hint = false;
+		g.won = true;
 	}
-	else if (won){
+	else if (g.won){
 		$('p').text("Please start a new game before guessing again.");
 	}
 	// if the array is empty, add the new value
-	/*else if (playersGuesses.length === 0){
-		playersGuesses.push(playersGuess);
+	/*else if (g.playersGuesses.length === 0){
+		g.playersGuesses.push(g.playersGuess);
 		$('p').css('color', 'red');
 		$('p').text("Try again!");
 	}*/
 	// the value is already in the array
-	else if (playersGuesses.indexOf(playersGuess) !== -1){
+	else if (g.playersGuesses.indexOf(g.playersGuess) !== -1){
 		$('p').addClass("wrong");
-		$('p').text("You've already guessed " + playersGuess + " Try again!");
+		$('p').text("You've already guessed " + g.playersGuess + " Try again!");
 	}
 	// else the value is a new incorrect guess
 	else {
-		playersGuesses.push(playersGuess);
+		g.playersGuesses.push(g.playersGuess);
 		$('p').addClass("wrong");
-		if (playersGuesses.length >= 5){
+		if (g.playersGuesses.length >= 5){
 			$('p').text("Game over! Better luck next time!");
 			$('#youLost').show();
 		}
 		else {
-			$('p').html("<p>" + lowerOrHigher(playersGuess, winningNumber) + " Try again!<br />You have " + (5-playersGuesses.length) + " guesses remaining.</p>");
+			$('p').html("<p>" + lowerOrHigher(g.playersGuess, g.winningNumber) + " Try again!<br />You have " + (5-g.playersGuesses.length) + " guesses remaining.</p>");
 			hint = true;
 		}
 	}
@@ -102,19 +101,19 @@ function checkGuess(){
 
 // Create a provide hint button that provides additional clues to the "Player"
 
-function provideHint(){
+function provideHint(g){
 	// add code here
-	if (playersGuesses.length === 0){
+	if (g.playersGuesses.length === 0){
 		$('p').text("Hmm... why don't you try guessing something first.");
-	} else if (playersGuesses.length < 5 && hint) {
+	} else if (g.playersGuesses.length < 5 && g.hint) {
 		var suggestions = [];
-		suggestions.push(winningNumber);
-		for (var i = 0; i < (5-playersGuesses.length)*2-1; i++){
-			suggestions.push(generateWinningNumber());
+		suggestions.push(g.winningNumber);
+		for (var i = 0; i < (5-g.playersGuesses.length)*2-1; i++){
+			suggestions.push(generatewinningNumber());
 		}
-		$('p').html("<p>One of these numbers is the winning number: <br /><b>" + suggestions.sort().join(', ') + "</b><br />You have " + (5 - playersGuesses.length) + " guesses remaining.</p>");
-		hint = false;
-	} else if (playersGuesses.length < 5 && !hint && (winningNumber != playersGuess)) {
+		$('p').html("<p>One of these numbers is the winning number: <br /><b>" + suggestions.sort().join(', ') + "</b><br />You have " + (5 - g.playersGuesses.length) + " guesses remaining.</p>");
+		g.hint = false;
+	} else if (g.playersGuesses.length < 5 && !g.hint && (g.winningNumber != g.playersGuess)) {
 		var t = $('p').text();
 		$('p').text(t + " Please guess something else before getting a new hint!");
 	} else {
@@ -125,13 +124,13 @@ function provideHint(){
 
 // Allow the "Player" to Play Again
 
-function playAgain(){
+function playAgain(g){
 	// add code here
-	playersGuesses = [];
-	hint = true;
-	won = false;
-	winningNumber = generateWinningNumber();
-	playersGuess = undefined;
+	g.playersGuesses = [];
+	g.hint = true;
+	g.won = false;
+	g.winningNumber = generatewinningNumber();
+	g.playersGuess = undefined;
 	$('img').hide();
 	if ($('p').hasClass("right")){
 		$('p').removeClass("right");
@@ -145,20 +144,19 @@ function playAgain(){
 
 /* **** Event Listeners/Handlers ****  */
 $('document').ready(function(){
+	var ggame = new GGame();
 
+	//generateg.winningNumber();
+	$('#submit').on('click', function(){
+		playersGuessSubmission(ggame)
+	});
 
-	//generateWinningNumber();
-	$('#submit').on('click', playersGuessSubmission);
-	
-	// unnecessary code b/c i used an html form
-	/*$('#userInput').on('keypress', function(e) {
-    		if(e.which == 13) {
-        		playersGuessSubmission;
-    		}
-		});*/
-
-	$('#extra .btn:last()').on('click', provideHint );
-	$('#extra .btn:first()').on('click', playAgain );
+	$('#extra .btn:last()').on('click', function(){
+		provideHint(ggame) 
+	});
+	$('#extra .btn:first()').on('click', function(){
+		playAgain(ggame) 
+	});
 
 
 
